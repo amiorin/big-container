@@ -26,3 +26,9 @@ install:
     rsync -a dotfiles/direnv/ ~/.config/direnv
     rsync -a dotfiles/zellij/ ~/.config/zellij
     rsync -a dotfiles/doomemacs/ ~/.doom.d
+
+# Docker publish
+publish:
+    echo $GH_TOKEN | docker login ghcr.io -u amiorin --password-stdin
+    docker build -t ghcr.io/amiorin/big-container .
+    docker push ghcr.io/amiorin/big-container

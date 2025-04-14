@@ -64,3 +64,9 @@ export GIT_COMMITTER_NAME="Alberto Miorin"
 export GIT_COMMITTER_EMAIL=32617+amiorin@users.noreply.github.com
 ```
 
+# Fix the permission
+
+``` shell
+gh auth refresh --scopes 'codespace,gist,read:org,repo,workflow,write:packages,delete:packages,read:packages'
+```
+
