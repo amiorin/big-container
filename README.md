@@ -49,3 +49,18 @@ docker run --rm -it \
 && kill `ps -o ppid= -p $$`
 ```
 
+# Multiple GitHub Accounts
+To handle multiple GitHub Accounts with this image, you need to clone the repos with
+* https://github.com/ for company repos
+* https://amiorin@github.com/ for personal repos
+
+# Commit with the correct Author
+Create a `.envrc` with the correct Author.
+
+``` shell
+export GIT_AUTHOR_NAME="Alberto Miorin"
+export GIT_AUTHOR_EMAIL=32617+amiorin@users.noreply.github.com
+export GIT_COMMITTER_NAME="Alberto Miorin"
+export GIT_COMMITTER_EMAIL=32617+amiorin@users.noreply.github.com
+```
+
