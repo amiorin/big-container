@@ -70,3 +70,8 @@ export GIT_COMMITTER_EMAIL=32617+amiorin@users.noreply.github.com
 gh auth refresh --scopes 'codespace,gist,read:org,repo,workflow,write:packages,delete:packages,read:packages'
 ```
 
+## License
+
+Copyright © 2025 Alberto Miorin
+
+`big-container` is released under the [MIT License](https://opensource.org/licenses/MIT).
