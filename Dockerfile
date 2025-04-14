@@ -145,11 +145,13 @@ RUN devbox global run -- clojure -Ttools install com.github.seancorfield/clj-new
 RUN devbox global run -- clojure -Ttools install-latest :lib io.github.seancorfield/deps-new :as new
 RUN mkdir -p ~/.local/bin && curl -o- -L https://raw.githubusercontent.com/babashka/bbin/v0.2.4/bbin > ~/.local/bin/bbin && chmod +x ~/.local/bin/bbin
 RUN bbin install io.github.babashka/neil
+RUN neil --version
 
 COPY justfile /tmp/dotfiles/justfile
 COPY dotfiles /tmp/dotfiles/dotfiles
 RUN cat /tmp/dotfiles/xterm-ghostty | tic -x -
 RUN devbox global run -- bash -c "cd /tmp/dotfiles && just install"
+RUN devbox global run -- bash -c "mkdir -p ~/.doom.d/snippets"
 RUN devbox global run -- ~/.emacs.d/bin/doom sync
 RUN devbox global run -- emacs --fg-daemon --eval '(setq vterm-always-compile-module t)' --eval '(vterm-module-compile)' --eval '(kill-emacs)'
 RUN devbox global run -- npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/dockerfile-language-server-nodejs install dockerfile-language-server-nodejs
