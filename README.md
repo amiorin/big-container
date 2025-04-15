@@ -5,10 +5,11 @@
 ![screenshot](https://raw.githubusercontent.com/amiorin/big-container/main/screenshot.png)
 
 ## Features
+* ARM64 and AMD64 multi-platform image
 * Clojure develpment works out of the box
-* Kitty Keyboard Protocol
+* Kitty Keyboard Protocol (you can use any combination of cmd, opt, ctrl, and shift)
 * Nerd fonts
-* Vterm
+* Vterm (emacs is the terminal multiplexer, Zellij is used only for tabs)
 * Recent files persisted in Macos
 * Atuin
 * Nix and Devbox to install packages
@@ -107,10 +108,10 @@ export GIT_COMMITTER_EMAIL=32617+amiorin@users.noreply.github.com
 
 ## Multiplayer development
 If you have an machine with ssh in the cloud, you can share it with other
-developers. You need to forward you `ssh agent`. Install the Babashka script
-`session-from-agent.bb` in the remote machine. An Atuin account needs to be
+developers. You need to forward your `ssh agent`. Install the Babashka script
+`session-from-agent.bb` on the remote machine. An Atuin account needs to be
 shared inside the team. The main difference with the first script is that here
-we start a container in the background and we use `Zellij` to create a session
+it starts a container in the background and it uses `Zellij` to create a session
 per developer. Developers can join the session of other developers to pair
 program.
 
@@ -163,7 +164,7 @@ If you want to modify your `config.el`, `config.fish`, or any config file,
 better to mount them and rebuild the container when done.
 
 ``` shell
-# Add it to the docker command
+# Add this to the docker command
 -v ~/code/personal/big-container/main/dotfiles/fish/config.fish:/home/vscode/.config/fish/config.fish \
 -v ~/code/personal/big-container/main/dotfiles/doomemacs/config.el:/home/vscode/.doom.d/config.el \
 ```

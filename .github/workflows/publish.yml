@@ -1,46 +1,73 @@
-name: Build and Push Docker Image to GHCR
+name: ci
+
 on:
-  workflow_dispatch:
   push:
-    paths-ignore:
-      - "**/*.md"
-      - "/.github/**/*"
-      - "/.gitignore"
-    branches:
-      - main
+
+permissions:
+  contents: read
+  packages: write # Required to push to GHCR
+
 jobs:
-  build-and-push-:
+  stage2-arm:
     runs-on: ubuntu-24.04-arm
-
-    permissions:
-      contents: read
-      packages: write # Required to push to GHCR
-
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and Push Docker Image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
-          context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.repository }}:arm
+          provenance: false
+
+  stage2-amd:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:amd
+          provenance: false
+
+  manifest:
+    runs-on: ubuntu-24.04-arm
+    needs:
+      - stage2-arm
+      - stage2-amd
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish the manifest
+        run: >-
+          docker manifest create ghcr.io/${{ github.repository }}:latest
+          ghcr.io/${{ github.repository }}:arm
+          ghcr.io/${{ github.repository }}:amd
+          && docker manifest annotate ghcr.io/${{ github.repository }}:latest
+          ghcr.io/${{ github.repository }}:arm --os linux --arch arm64
+          && docker manifest annotate ghcr.io/${{ github.repository }}:latest
+          ghcr.io/${{ github.repository }}:amd --os linux --arch amd64
+          && docker manifest push ghcr.io/${{ github.repository }}:latest
