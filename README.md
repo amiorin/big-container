@@ -1,19 +1,40 @@
 # Intro
-`doom emacs` development inside a container.
+`doom emacs` development inside a container. Setting up `doom emacs` requires months. This container contains an opinionated version of `doom emacs` tailored for `terminal` development. It is supposed to be used with `Ghostty`.
 
-# Install
-* Create a script (`~/.local/bin/dev` for example).
-* Adapt it to your set-up (replace `amiorin` with your `username`)
-* Replace `alberto-of` with your company GitHub name.
-* Replace `amiorin` with your personal GitHub name.
-* Install `atuin` on Macos.
-* Install `OrbStack` on Macos.
+## Features
+* Clojure develpment works out of the box
+* Kitty Keyboard Protocol
+* Nerd fonts
+* Vterm
+* Recent files persisted in Macos
+* Atuin
+* Nix and Devbox to install packages
+* Fish shell
+* It works in GitHub Action (uid 1001)
+* Many tools (check the Dockerfile)
+
+## Install
+* Create a script (`~/.local/bin/dev` for example)
+* Install `Ghostty` on Macos
+* Install `atuin` on Macos
+* Install `OrbStack` on Macos
+* Replace `amiorin` with your personal GitHub name
+* Replace `alberto-of` with your company GitHub name
+* Fix the volumes to see your repos inside the container
+* Run `dev`
 
 ``` shell
 #!/usr/bin/env bash
 
-gh auth token -u amiorin > /dev/null 2>&1 || (echo Already inside "dev" && exit 1)
+GITHUB_USER=amiorin
+GITHUB_USER_ALPHA=alberto-of
+
+gh auth token -u $GITHUB_USER > /dev/null 2>&1 || (echo Already inside "dev" && exit 1)
 [ $? -eq 0 ] || exit 0
+
+ZELLIJ_SESSION_NAME=${GITHUB_USER}_MACOS
+GITHUB_TOKEN=`gh auth token -u $GITHUB_USER`
+GITHUB_TOKEN_ALPHA=`gh auth token -u $GITHUB_USER_ALPHA`
 
 mkdir -p ~/.emacs.d/.local/cache
 touch ~/.emacs.d/.local/cache/recentf
@@ -28,34 +49,48 @@ mkdir -p ~/code/personal
 mkdir -p ~/code/of
 
 docker run --rm -it \
-           -e GITHUB_TOKEN=`gh auth token -u alberto-of` \
-           -e GHP_TOKEN=`gh auth token -u alberto-of` \
-           -e GH_TOKEN=`gh auth token -u alberto-of` \
-           -e AMIORIN_TOKEN=`gh auth token -u amiorin` \
+           -e GITHUB_TOKEN=$GITHUB_TOKEN \
+           -e GITHUB_TOKEN_ALPHA=$GITHUB_TOKEN_ALPHA \
+           -e GHP_TOKEN=$GITHUB_TOKEN \
+           -e GH_TOKEN=$GITHUB_TOKEN \
            --net=host \
            -v /var/run/docker.sock:/var/run/docker.sock \
-           -v /Users/amiorin/.emacs.d/.local/cache/recentf:/home/vscode/.emacs.d/.local/cache/recentf \
-           -v /Users/amiorin/.m2:/home/vscode/.m2 \
-           -v /Users/amiorin/.aws:/home/vscode/.aws \
-           -v /Users/amiorin/.ssh:/home/vscode/.ssh \
-           -v /Users/amiorin/.local/share/atuin:/home/vscode/.local/share/atuin \
-           -v /Users/amiorin/.ansible:/home/vscode/.ansible \
-           -v /Users/amiorin/.local/bin/dev:/home/vscode/.local/bin/dev \
-           -v /Users/amiorin/code/personal:/home/vscode/code/personal \
-           -v /Users/amiorin/code/of:/home/vscode/workspaces \
-           -v /Users/amiorin:/home/vscode/amiorin \
+           -v ~/.emacs.d/.local/cache/recentf:/home/vscode/.emacs.d/.local/cache/recentf \
+           -v ~/.m2:/home/vscode/.m2 \
+           -v ~/.aws:/home/vscode/.aws \
+           -v ~/.ssh:/home/vscode/.ssh \
+           -v ~/.local/share/atuin:/home/vscode/.local/share/atuin \
+           -v ~/.ansible:/home/vscode/.ansible \
+           -v ~/.local/bin/dev:/home/vscode/.local/bin/dev \
+           -v ~/code/personal:/home/vscode/code/personal \
+           -v ~/code/of:/home/vscode/workspaces \
+           -v ~:/home/vscode/$USER \
            ghcr.io/amiorin/big-container:latest \
-           fish -c 'zellij attach --create ALBERTO_MACOS && begin pkill emacs || true; end' \
+           fish -c "zellij attach --create $ZELLIJ_SESSION_NAME && begin pkill emacs || true; end" \
 && kill `ps -o ppid= -p $$`
 ```
 
-# Multiple GitHub Accounts
+## Multiple GitHub Accounts
 To handle multiple GitHub Accounts with this image, you need to clone the repos with
-* https://github.com/ for company repos
-* https://amiorin@github.com/ for personal repos
+* https://github.com/ for main account
+* https://alpha@github.com/ for alpha account
+* https://beta@github.com/ for alpha account
+* https://gamma@github.com/ for alpha account
 
-# Commit with the correct Author
-Create a `.envrc` with the correct Author.
+## Commit with the correct Author
+If you commit with `magit` you can have a default author defined in `.doom.d/config.ed`
+
+``` emacs-lisp
+(let ((user (getenv "ZELLIJ_SESSION_NAME")))
+  (cond
+   ((string-prefix-p "AMIORIN" user)
+    (progn (set-git-name "Alberto Miorin")
+           (set-git-email "32617+amiorin@users.noreply.github.com")
+           (setq display-line-numbers-type t)))
+```
+
+Or you can override it with environment variables.
+* Create a `.envrc`
 
 ``` shell
 export GIT_AUTHOR_NAME="Alberto Miorin"
@@ -64,7 +99,10 @@ export GIT_COMMITTER_NAME="Alberto Miorin"
 export GIT_COMMITTER_EMAIL=32617+amiorin@users.noreply.github.com
 ```
 
-# Fix the permission
+## Development
+
+## Fix the permission
+If you cannot push the image manually in your fork, probably you need to fix the token permissions.
 
 ``` shell
 gh auth refresh --scopes 'codespace,gist,read:org,repo,workflow,write:packages,delete:packages,read:packages'

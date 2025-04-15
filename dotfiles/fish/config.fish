@@ -25,12 +25,16 @@ if status is-interactive
         git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/"
     end
 
-    if test -n "$AMIORIN_TOKEN"
-        git config --global url."https://$AMIORIN_TOKEN:x-oauth-basic@github.com/".insteadOf "https://amiorin@github.com/"
+    if test -n "$GITHUB_TOKEN_ALPHA"
+        git config --global url."https://$GITHUB_TOKEN_ALPHA:x-oauth-basic@github.com/".insteadOf "https://alpha@github.com/"
     end
 
-    if test -n "$FACUNDO_TOKEN"
-        git config --global url."https://$FACUNDO_TOKEN:x-oauth-basic@github.com/".insteadOf "https://elbarri@github.com/"
+    if test -n "$GITHUB_TOKEN_BETA"
+        git config --global url."https://$AMIORIN_TOKEN_BETA:x-oauth-basic@github.com/".insteadOf "https://beta@github.com/"
+    end
+
+    if test -n "$GITHUB_TOKEN_GAMMA"
+        git config --global url."https://$FACUNDO_TOKEN_GAMMA:x-oauth-basic@github.com/".insteadOf "https://gamma@github.com/"
     end
 
     micromamba shell hook --shell fish | source
