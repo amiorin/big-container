@@ -90,7 +90,7 @@
        ;;prodigy           ; FIXME managing external services & code builders
        (terraform +lsp)        ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
-       ;;tree-sitter       ; syntax and parsing, sitting in a tree...
+       tree-sitter       ; syntax and parsing, sitting in a tree...
        ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
