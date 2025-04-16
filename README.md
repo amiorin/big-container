@@ -60,7 +60,6 @@ mkdir -p ~/code/of
 docker run --rm -it \
            -e GITHUB_TOKEN=$GITHUB_TOKEN \
            -e GITHUB_TOKEN_ALPHA=$GITHUB_TOKEN_ALPHA \
-           -e GHP_TOKEN=$GITHUB_TOKEN \
            -e GH_TOKEN=$GITHUB_TOKEN \
            --net=host \
            -v /var/run/docker.sock:/var/run/docker.sock \
@@ -137,7 +136,7 @@ end
 
 docker run -d \
            --name devbox \
-           -e GHP_TOKEN="$GHP_TOKEN" \
+           -e GH_TOKEN="$GH_TOKEN" \
            -e ATUIN_LOGIN="$ATUIN_LOGIN" \
            --net=host \
            -v /var/run/docker.sock:/var/run/docker.sock \
@@ -172,11 +171,23 @@ better to mount them and rebuild the container when done.
 ```
 
 ## Build
-The GitHub Action fails because the docker image is too big. Either you build it
-on your mac or you need to use a self-hosted github runner.
+The GitHub Action creates a multi-platform docker image for AMD64 and ARM64.
+You can also publish the image from your computer.
 
 ``` shell
 just publish
+```
+
+## Dotfiles
+You can `backup` and `install` the dotfiles without rebuilding the image.
+
+``` shell
+# Available recipes:
+just
+# Backup the dotfiles
+just backup
+# Install the dotfiles
+just install
 ```
 
 ## Fix the permission
