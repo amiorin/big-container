@@ -81,10 +81,10 @@ docker run --rm -it \
 
 ## Multiple GitHub Accounts
 To handle multiple GitHub Accounts with this image, you need to clone the repos with
-* https://github.com/ for main account
-* https://alpha@github.com/ for alpha account
-* https://beta@github.com/ for beta account
-* https://gamma@github.com/ for gamma account
+* https://github.com/ for the main account
+* https://alpha@github.com/ for the alpha account
+* https://beta@github.com/ for the beta account
+* https://gamma@github.com/ for the gamma account
 
 ## Commit with the correct Author
 If you commit with `magit` you can have a default author defined in `.doom.d/config.el`
