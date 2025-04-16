@@ -1,6 +1,6 @@
 <h1 align=center><code>big-container</code></h1>
 
-`doom emacs` development inside a container. Setting up `doom emacs` requires months. This container contains an opinionated version of `doom emacs` tailored for `terminal` development. It is supposed to be used with `Ghostty`.
+`doom emacs` development inside a container. Setting up `doom emacs` requires months. This container is an opinionated version of `doom emacs` tailored for `terminal` development. It is supposed to be used with `Ghostty`.
 
 ![screenshot](https://raw.githubusercontent.com/amiorin/big-container/main/screenshot.png)
 
