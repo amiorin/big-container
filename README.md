@@ -17,6 +17,8 @@
 * It works in GitHub Action (uid 1001)
 * Many tools (check the Dockerfile)
 * Direnv
+* Zellij
+* It supports multiple GitHub accounts
 
 ## Install
 * Create a script (`~/.local/bin/dev` for example)
