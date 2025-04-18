@@ -101,7 +101,7 @@ RUN devbox global add yj
 RUN devbox global add mysql80@8.0.36 --disable-plugin
 RUN devbox global add postgresql@14.9 --disable-plugin
 RUN devbox global add nginx --disable-plugin
-RUN devbox global add emacs@29.4
+RUN devbox global add emacs
 
 RUN sudo ln -sf /home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish /usr/bin/fish \
     && echo /usr/bin/fish | sudo tee -a /etc/shells \
