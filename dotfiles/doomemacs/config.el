@@ -247,6 +247,16 @@
   :n "M-]" #'evil-cp-wrap-previous-square ;; ]
   ))
 
-;; zoxide
-(after! zoxide
-  (add-hook 'find-file-hook #'zoxide-add))
+;; zoxide and vterm
+(use-package! zoxide
+  :demand t
+  :config
+  (setq vterm-clear-scrollback-when-clearing t)
+  (setq vterm-eval-cmds '(("find-file" find-file)
+                          ("message" message)
+                          ("vterm-clear-scrollback" vterm-clear-scrollback)
+                          ("dired" dired)
+                          ("ediff-files" ediff-files)))
+  (add-hook 'find-file-hook (lambda ()
+                              (with-current-buffer (current-buffer)
+                                (zoxide-add default-directory)))))

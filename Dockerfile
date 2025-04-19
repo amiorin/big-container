@@ -107,6 +107,8 @@ RUN sudo ln -sf /home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/
     && echo /usr/bin/fish | sudo tee -a /etc/shells \
     && echo /home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish | sudo tee -a /etc/shells \
     && sudo chsh -s /usr/bin/fish ${DEVBOX_USER}
+RUN devbox global run -- fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher && fisher install pymander/vfish'
+
 
 RUN mkdir ~/.npm-global \
     && devbox global run -- npm config set prefix '~/.npm-global' \

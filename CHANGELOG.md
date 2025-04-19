@@ -9,6 +9,13 @@ The patch number is calculated with `git rev-list --count HEAD`
 
 ## [Unreleased]
 
+### Added
+
+- mount zoxide dir
+- zoxide emacs package
+- fisher for fish
+- vfish for zoxide
+
 ## [0.1.18] - 2025-04-18
 
 ### Added
