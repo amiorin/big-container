@@ -246,3 +246,7 @@
   :n "M-5" #'evil-cp-wrap-next-square     ;; [
   :n "M-]" #'evil-cp-wrap-previous-square ;; ]
   ))
+
+;; zoxide
+(after! zoxide
+  (add-hook 'find-file-hook #'zoxide-add))

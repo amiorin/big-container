@@ -37,13 +37,11 @@
 
 GITHUB_USER=amiorin
 GITHUB_USER_ALPHA=alberto-of
-# GITHUB_USER_BETA=
-# GITHUB_USER_GAMMA=
 
 gh auth token -u $GITHUB_USER > /dev/null 2>&1 || (echo Already inside "dev" && exit 1)
 [ $? -eq 0 ] || exit 0
 
-ZELLIJ_SESSION_NAME=${GITHUB_USER}_MACOS
+ZELLIJ_SESSION_NAME=${GITHUB_USER^^}_MACOS
 GITHUB_TOKEN=`gh auth token -u $GITHUB_USER`
 GITHUB_TOKEN_ALPHA=`gh auth token -u $GITHUB_USER_ALPHA`
 
@@ -54,6 +52,7 @@ mkdir -p ~/.aws
 mkdir -p ~/.ssh
 chmod 0700 ~/.ssh
 mkdir -p ~/.local/share/atuin
+mkdir -p ~/.local/share/zoxide
 mkdir -p ~/.ansible
 mkdir -p ~/.local/bin
 mkdir -p ~/code/personal
@@ -70,6 +69,7 @@ docker run --rm -it \
            -v ~/.aws:/home/vscode/.aws \
            -v ~/.ssh:/home/vscode/.ssh \
            -v ~/.local/share/atuin:/home/vscode/.local/share/atuin \
+           -v ~/.local/share/zoxide:/home/vscode/.local/share/zoxide \
            -v ~/.ansible:/home/vscode/.ansible \
            -v ~/.local/bin/dev:/home/vscode/.local/bin/dev \
            -v ~/code/personal:/home/vscode/code/personal \
