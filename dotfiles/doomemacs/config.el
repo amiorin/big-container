@@ -14,6 +14,7 @@
 ;; (setq server-socket-dir (concat "~/.emacs.d/" (getenv "ZELLIJ_SESSION_NAME") "/"))
 ;; shortcut to start deer
 (evil-global-set-key 'normal "-" 'dired-jump)
+
 ;; When done with this frame, type SPC q f`?
 (setq server-client-instructions nil)
 ;; No prompt
@@ -139,6 +140,7 @@
 (define-key (current-global-map) [remap evil-cp-previous-opening] 'evil-cp-next-opening)
 
 ;; override evil-cleverparens
+(setq evil-cleverparens-use-s-and-S nil)
 (defvar evil-cp-additional-movement-keys
   '(("L"   . evil-cp-forward-sexp)
     ("H"   . evil-cp-backward-sexp)
