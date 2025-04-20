@@ -75,9 +75,8 @@
 
 ;; loead direnv mode at startup
 (use-package! direnv
-  :demand t
+  :hook (doom-first-file . direnv-mode)
   :config
-  (direnv-mode)
   (add-to-list 'warning-suppress-types '(direnv)))
 
 ;; dired
@@ -86,12 +85,10 @@
       :n "l" #'dired-find-file)
 
 ;; smartparens and so on
-(use-package! smartparens
-  :config
-  (require 'smartparens-config))
-(add-hook 'prog-mode-hook #'smartparens-strict-mode)
-(add-hook 'prog-mode-hook #'evil-cleverparens-mode)
-(setq evil-move-beyond-eol t)
+(after! smartparens
+  (add-hook 'prog-mode-hook #'smartparens-strict-mode)
+  (add-hook 'prog-mode-hook #'evil-cleverparens-mode)
+  (setq evil-move-beyond-eol t))
 
 ;; open terminal on the right
 (defun open-term-on-right ()
@@ -204,10 +201,6 @@
            (map! :nv ":" #'execute-extended-command)
            (map! :leader :nv ":" #'evil-ex)))))
 
-(use-package! kkp
-  :demand t
-  :config (global-kkp-mode +1))
-
 (map! :map 'override "s-s" #'save-buffer)
 (map! :map 'override "s-t" #'open-term-on-right)
 (map! :map 'override "s-w" #'evil-window-delete)
@@ -248,9 +241,7 @@
   ))
 
 ;; zoxide and vterm
-(use-package! zoxide
-  :demand t
-  :config
+(after! vterm
   (setq vterm-clear-scrollback-when-clearing t)
   (setq vterm-eval-cmds '(("find-file" find-file)
                           ("message" message)
