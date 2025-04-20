@@ -97,9 +97,6 @@
   (+evil/window-vsplit-and-follow)
   (+vterm/here nil))
 
-(map! :map global-map
-      :ni "C-x C-t" #'open-term-on-right)
-
 ;; make easier to find vterm in list buffers
 (setq vterm-buffer-name-string "vterm %s")
 
@@ -115,25 +112,14 @@
 (setq avy-all-windows t)
 (map! :map evil-snipe-local-mode-map :nv "s" #'evil-avy-goto-char-timer)
 
-;; same bindings in vterm
-(after! vterm
-  (map! :map vterm-mode-map :i "C-w d" #'evil-window-delete)
-  (map! :map vterm-mode-map :i "C-w C-o" #'delete-other-windows)
-  (map! :map vterm-mode-map :i "C-w v" #'+evil/window-vsplit-and-follow)
-  (map! :map vterm-mode-map :i "C-w h" #'evil-window-left)
-  (map! :map vterm-mode-map :i "C-w j" #'evil-window-down)
-  (map! :map vterm-mode-map :i "C-w k" #'evil-window-up)
-  (map! :map vterm-mode-map :i "C-w l" #'evil-window-right))
-
 ;; better "SPC c j"
-(after! consult-lsp
-  (map! :leader
+(map! :leader
       ;;; <leader> c --- code
-        (:prefix-map ("c" . "code")
-                     (:when (and (modulep! :tools lsp) (not (modulep! :tools lsp +eglot)))
-                       (:when (modulep! :completion vertico)
-                         :desc "Jump to symbol in current file workspace" "j"   #'consult-lsp-file-symbols
-                         :desc "Jump to symbol in current workspace"      "J"   #'consult-lsp-symbols)))))
+      (:prefix-map ("c" . "code")
+                   (:when (and (modulep! :tools lsp) (not (modulep! :tools lsp +eglot)))
+                     (:when (modulep! :completion vertico)
+                       :desc "Jump to symbol in current file workspace" "j"   #'consult-lsp-file-symbols
+                       :desc "Jump to symbol in current workspace"      "J"   #'consult-lsp-symbols))))
 
 ;; swap evil-cp-next-opening with evil-cp-previous-opening
 (define-key (current-global-map) [remap evil-cp-next-opening] 'evil-cp-previous-opening)

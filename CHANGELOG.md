@@ -15,6 +15,14 @@ The patch number is calculated with `git rev-list --count HEAD`
 - zoxide emacs package
 - fisher for fish
 - vfish for zoxide
+- evil-avy-goto-char-timer works again
+
+### Changed
+- consult-lsp-file-symbols is mapped to `SP c j` immediately
+
+### Removed
+
+- maps before KKP
 
 ## [0.1.18] - 2025-04-18
 
