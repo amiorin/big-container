@@ -92,10 +92,10 @@
   (setq evil-move-beyond-eol t))
 
 ;; open terminal on the right
-(defun open-term-on-right ()
-  (interactive)
+(defun open-term-on-right (arg)
+  (interactive "P")
   (+evil/window-vsplit-and-follow)
-  (+vterm/here nil))
+  (+vterm/here arg))
 
 ;; make easier to find vterm in list buffers
 (setq vterm-buffer-name-string "vterm %s")

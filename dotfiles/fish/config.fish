@@ -64,24 +64,13 @@ if status is-interactive
     set -g fish_greeting
     set -gx COLORTERM truecolor
 
-    # https://the.exa.website/
-    alias ls=ls
-    alias ll="ls -lh"
-    alias l="ls -la"
-    alias rt="ls -l --sort newest"
+    # https://eza.rocks
+    alias ls=eza
+    alias ll="ls -l --smart-group --icons --group-directories-first"
+    alias l="ll -a"
+    alias rt="ls -l -r -a --smart-group --sort=time"
     alias u="cd .."
     alias k=kubectl
-
-    # https://github.com/zellij-org/zellij/issues/3184
-    set server_name "$ZELLIJ_SESSION_NAME"
-    test -z "$ZELLIJ_SESSION_NAME"; and set server_name "server"
-    set emacs_exp '(with-current-buffer (window-buffer (selected-window)) (projectile-project-root))'
-    set emacs_dir (emacsclient -a 'echo' --eval "$emacs_exp" -s /tmp/emacs1001/"$server_name" 2> /dev/null)
-    if test "$emacs_dir" != "nil"
-        if test "$emacs_dir" != "$emacs_exp"
-            cd (echo $emacs_dir | jq -r)
-        end
-    end
 end
 
 set -gx POETRY_VIRTUALENVS_IN_PROJECT true

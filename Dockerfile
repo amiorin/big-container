@@ -96,6 +96,7 @@ RUN devbox global add s5cmd
 RUN devbox global add zulu@17.0.10
 RUN devbox global add clojure
 RUN devbox global add zoxide
+RUN devbox global add eza
 RUN devbox global add pixi
 RUN devbox global add yj
 RUN devbox global add mysql80@8.0.36 --disable-plugin
