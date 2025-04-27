@@ -57,6 +57,7 @@
 ;; no prompt for .dir-locals.el
 (setq safe-local-variable-values
       '((cider-preferred-build-tool . clojure-cli)
+        (cider-clojure-cli-aliases . ":dev")
         (cider-clojure-cli-aliases . ":dev:cider")
         (cider-default-cljs-repl . shadow)
         (cider-shadow-default-options . ":app")
