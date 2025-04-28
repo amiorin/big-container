@@ -10,10 +10,10 @@
 (setq confirm-kill-emacs nil)
 ;; don't prompt the first time we start vterm
 (setq vterm-always-compile-module t)
-;; default path has the wrong permissions
-;; (setq server-socket-dir (concat "~/.emacs.d/" (getenv "ZELLIJ_SESSION_NAME") "/"))
-;; shortcut to start deer
-(evil-global-set-key 'normal "-" 'dired-jump)
+;; shortcut to start dired
+(map!
+ (:map 'override
+  :n "-" #'dired-jump))
 
 ;; When done with this frame, type SPC q f`?
 (setq server-client-instructions nil)
