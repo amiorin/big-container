@@ -18,8 +18,8 @@
 * Fish shell
 * It works in GitHub Action (uid 1001)
 * Many tools (check the Dockerfile)
-* Direnv
 * Zellij
+* Direnv
 * It supports multiple GitHub accounts
 
 ## Install
