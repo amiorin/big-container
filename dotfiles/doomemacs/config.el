@@ -47,6 +47,12 @@
 (setq cider-save-file-on-load t)
 (setq cider-ns-refresh-show-log-buffer t)
 (setq cider-ns-save-files-on-refresh t)
+(setq cider-inspector-pretty-print t)
+(map! :map cider-inspector-mode-map
+      :n "d" #'cider-inspector-def-current-val
+      :n "y" #'cider-inspector-display-analytics
+      :n "v" #'cider-inspector-toggle-view-mode
+      :n "p" #'cider-inspector-toggle-pretty-print)
 
 ;; https://micro.rousette.org.uk/2021/01/03/a-useful-binding.html
 (map!
