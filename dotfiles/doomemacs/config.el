@@ -254,3 +254,34 @@
 (setq display-time-default-load-average nil)
 (setq doom-modeline-time t)
 (display-time-mode 1)
+
+
+;; better tab-name and list files outside a project
+(defun my-update-tabname ()
+  (let* ((zellij (getenv "ZELLIJ_SESSION_NAME"))
+         (user (when zellij
+                 (downcase (car (split-string zellij "@")))))
+         (root (or (projectile-project-root)
+                   default-directory))
+         (root (if (string= root "/")
+                   "root"
+                 root))
+         (root (if (string= root "/home/vscode/")
+                   "~"
+                 root))
+         (root (replace-regexp-in-string "/home/vscode/" "" root))
+         (root (replace-regexp-in-string "workspaces/" "" root))
+         (xs (split-string root "/"))
+         (xs (seq-filter (lambda (s) (not (string-empty-p s))) xs))
+         (_ (seq-setq (xs p-user) (if (member (car xs) '("alberto" "facundo" "valery" "rafael"))
+                                      (list (cdr xs) (car xs))
+                                    (list xs user))))
+         (suffix (if (not (string= p-user user))
+                     (format " (%s)" p-user)
+                   ""))
+         (tab-name (concat (string-join xs "/") suffix))
+         (cmd (format "zellij action rename-tab \"%s\"" tab-name)))
+    (start-process-shell-command "update-tab-name" "*update-tab-name*" cmd)))
+(add-hook 'doom-switch-buffer-hook #'my-update-tabname)
+(add-hook 'doom-switch-window-hook #'my-update-tabname)
+
