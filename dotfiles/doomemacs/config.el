@@ -258,6 +258,7 @@
 
 ;; better tab-name and list files outside a project
 (defun my-update-tabname ()
+  (interactive)
   (let* ((zellij (getenv "ZELLIJ_SESSION_NAME"))
          (user (when zellij
                  (downcase (car (split-string zellij "@")))))
@@ -265,6 +266,9 @@
                    default-directory))
          (root (if (string= root "/")
                    "root"
+                 root))
+         (root (if (string= root "/home/vscode/workspaces/")
+                   "workspaces"
                  root))
          (root (if (string= root "/home/vscode/")
                    "~"
@@ -276,6 +280,9 @@
          (_ (seq-setq (xs p-user) (if (member (car xs) '("alberto" "facundo" "valery" "rafael"))
                                       (list (cdr xs) (car xs))
                                     (list xs user))))
+         (xs (if (null xs)
+                 (list "workspaces" p-user)
+               xs))
          (suffix (if (not (string= p-user user))
                      (format " (%s)" p-user)
                    ""))
@@ -284,4 +291,3 @@
     (start-process-shell-command "update-tab-name" "*update-tab-name*" cmd)))
 (add-hook 'doom-switch-buffer-hook #'my-update-tabname)
 (add-hook 'doom-switch-window-hook #'my-update-tabname)
-
