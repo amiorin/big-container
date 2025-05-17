@@ -246,3 +246,11 @@
   (add-hook 'find-file-hook (lambda ()
                               (with-current-buffer (current-buffer)
                                 (zoxide-add default-directory)))))
+
+;; show the clock
+(set-time-zone-rule "/usr/share/zoneinfo/Europe/Berlin")
+(setq display-time-24-hr-format t)
+(setq display-time-format "%H:%M")
+(setq display-time-default-load-average nil)
+(setq doom-modeline-time t)
+(display-time-mode 1)
