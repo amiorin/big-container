@@ -291,3 +291,7 @@
     (start-process-shell-command "update-tab-name" "*update-tab-name*" cmd)))
 (add-hook 'doom-switch-buffer-hook #'my-update-tabname)
 (add-hook 'doom-switch-window-hook #'my-update-tabname)
+
+;; don't add directories to recentf
+(after! recentf
+  (remove-hook 'dired-mode-hook #'doom--recentf-add-dired-directory-h))
