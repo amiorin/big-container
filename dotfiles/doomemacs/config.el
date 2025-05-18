@@ -253,8 +253,8 @@
 
 
 ;; better tab-name and list files outside a project
-(defun my-update-tabname ()
-  (interactive)
+(defvar my-update-tabname-timer (current-time))
+(defun my-do-update-tabname ()
   (let* ((zellij (getenv "ZELLIJ_SESSION_NAME"))
          (user (when zellij
                  (downcase (car (split-string zellij "@")))))
@@ -285,6 +285,14 @@
          (tab-name (concat (string-join xs "/") suffix))
          (cmd (format "zellij action rename-tab \"%s\"" tab-name)))
     (start-process-shell-command "update-tab-name" "*update-tab-name*" cmd)))
+(defun my-update-tabname ()
+  (interactive)
+  (let* ((t1 (current-time))
+         (t2 my-update-tabname-timer)
+         (delta 0.1))
+    (when (> (abs (float-time (time-subtract t1 t2))) delta)
+      (setq my-update-tabname-timer (current-time))
+      (my-do-update-tabname))))
 (add-hook 'doom-switch-buffer-hook #'my-update-tabname)
 (add-hook 'doom-switch-window-hook #'my-update-tabname)
 
