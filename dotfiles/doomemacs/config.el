@@ -115,10 +115,6 @@
   (custom-set-faces!
     '(corfu-current :background "#000000")))
 
-;; use avy on s
-(setq avy-all-windows t)
-(map! :map evil-snipe-local-mode-map :nv "s" #'evil-avy-goto-char-timer)
-
 ;; better "SPC c j"
 (map! :leader
       ;;; <leader> c --- code
@@ -295,3 +291,38 @@
 ;; don't add directories to recentf
 (after! recentf
   (remove-hook 'dired-mode-hook #'doom--recentf-add-dired-directory-h))
+
+;; localleader on , instead on SPC-m
+(setq doom-localleader-key ",")
+(setq doom-localleader-alt-key "M-,")
+
+;; disable f and t
+(map! :map evil-motion-state-map
+      "f" nil
+      "F" nil)
+(map! :map evil-motion-state-map
+      "t" nil
+      "T" nil)
+
+;; use avy on s
+(setq avy-all-windows t)
+(map! :nv "s" #'evil-avy-goto-char-timer)
+
+;; use always preview in recentf and CMD-ret for the rest
+(after! consult
+  (consult-customize
+   consult-recent-file
+   :preview-key 'any)
+  (consult-customize
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark
+   consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+   :preview-key "s-<return>")
+  (when (modulep! :config default)
+    (consult-customize
+     +default/search-project +default/search-other-project
+     +default/search-project-for-symbol-at-point
+     +default/search-cwd +default/search-other-cwd
+     +default/search-notes-for-symbol-at-point
+     +default/search-emacsd
+     :preview-key "s-<return>")))
