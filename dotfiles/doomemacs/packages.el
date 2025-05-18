@@ -17,3 +17,4 @@
 (package! just-mode :recipe (:host github :repo "leon-barrett/just-mode.el"))
 (package! zoxide :recipe (:host github :repo "Vonfry/zoxide.el"))
 (package! evil-snipe :disable t)
+(package! transient :pin "25b994a565ce8035330b0a3071ee430c0282349e")
