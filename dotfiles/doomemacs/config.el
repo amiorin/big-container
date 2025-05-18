@@ -326,3 +326,7 @@
      +default/search-notes-for-symbol-at-point
      +default/search-emacsd
      :preview-key "s-<return>")))
+
+;; I need to see the clock
+(after! vterm
+  (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
