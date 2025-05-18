@@ -153,6 +153,40 @@
 ;; python
 (setq lsp-pyright-langserver-command "basedpyright")
 
+(defun ruff-format-buffer()
+  "Format the current buffer using ruff and preserve point."
+  (interactive)
+  (when (executable-find "ruff")
+    (let* ((filename (or (buffer-file-name) (buffer-name)))
+           (args (list "format" "--stdin-filename" filename "-"))
+           (orig-point (point)))
+      (save-excursion
+        (apply #'call-process-region (point-min) (point-max) "ruff" t t nil args))
+      (goto-char orig-point))))
+
+(defun ruff-fix-buffer()
+  "Run `ruff check --fix` on the current buffer via a temp file and reload it."
+  (interactive)
+  (when (executable-find "ruff")
+    (let* ((orig-point (point))
+           (temp-file (make-temp-file "ruff-fix" nil ".py"))
+           (current-contents (buffer-substring-no-properties (point-min) (point-max))))
+      (with-temp-file temp-file
+        (insert current-contents))
+      (let ((exit-code (call-process "ruff" nil nil nil
+                                     "check" "--fix" temp-file)))
+        (if (eq exit-code 0)
+            (progn
+              (erase-buffer)
+              (insert-file-contents temp-file)
+              (goto-char (min orig-point (point-max)))
+              (message "Ruff fix applied."))
+          (message "Ruff failed with exit code %d" exit-code))))))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook #'ruff-format-buffer nil t)))
+
 (defun set-git-name
     (value)
   (setenv "GIT_AUTHOR_NAME" value)

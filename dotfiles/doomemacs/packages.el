@@ -7,7 +7,6 @@
 (package! ini)
 (package! dash)
 (package! drag-stuff)
-(package! python-black)
 (package! interaction-log :recipe (:host github :repo "amiorin/interaction-log.el"))
 (package! evil-cleverparens)
 (package! expand-region)

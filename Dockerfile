@@ -122,7 +122,7 @@ RUN mkdir ~/.docker
 
 RUN devbox global run -- micromamba create --yes --name py3.10 --channel conda-forge python=3.10
 RUN devbox global run -- micromamba create --yes --name py3.11 --channel conda-forge python=3.11
-RUN devbox global run -- pipx install --python /home/${DEVBOX_USER}/micromamba/envs/py3.10/bin/python3.10 poetry meltano==2.20 basedpyright ansible-core
+RUN devbox global run -- pipx install --python /home/${DEVBOX_USER}/micromamba/envs/py3.10/bin/python3.10 poetry meltano==2.20 basedpyright ruff ansible-core
 RUN devbox global run -- pipx inject --include-apps --include-deps ansible-core argcomplete boto3
 ENV PATH="/home/${DEVBOX_USER}/.local/bin:$PATH"
 
