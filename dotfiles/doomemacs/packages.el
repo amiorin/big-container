@@ -7,6 +7,7 @@
 (package! ini)
 (package! dash)
 (package! drag-stuff)
+(package! python-black)
 (package! interaction-log :recipe (:host github :repo "amiorin/interaction-log.el"))
 (package! evil-cleverparens)
 (package! expand-region)
@@ -15,5 +16,4 @@
 (package! lsp-pyright :pin "dd54b3ae7c22d34faaced7b1a89739063c552b1f")
 (package! just-mode :recipe (:host github :repo "leon-barrett/just-mode.el"))
 (package! zoxide :recipe (:host github :repo "Vonfry/zoxide.el"))
-(package! evil-snipe :disable t)
 (package! transient :pin "25b994a565ce8035330b0a3071ee430c0282349e")

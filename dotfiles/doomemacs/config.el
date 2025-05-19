@@ -153,40 +153,6 @@
 ;; python
 (setq lsp-pyright-langserver-command "basedpyright")
 
-(defun ruff-format-buffer()
-  "Format the current buffer using ruff and preserve point."
-  (interactive)
-  (when (executable-find "ruff")
-    (let* ((filename (or (buffer-file-name) (buffer-name)))
-           (args (list "format" "--stdin-filename" filename "-"))
-           (orig-point (point)))
-      (save-excursion
-        (apply #'call-process-region (point-min) (point-max) "ruff" t t nil args))
-      (goto-char orig-point))))
-
-(defun ruff-fix-buffer()
-  "Run `ruff check --fix` on the current buffer via a temp file and reload it."
-  (interactive)
-  (when (executable-find "ruff")
-    (let* ((orig-point (point))
-           (temp-file (make-temp-file "ruff-fix" nil ".py"))
-           (current-contents (buffer-substring-no-properties (point-min) (point-max))))
-      (with-temp-file temp-file
-        (insert current-contents))
-      (let ((exit-code (call-process "ruff" nil nil nil
-                                     "check" "--fix" temp-file)))
-        (if (eq exit-code 0)
-            (progn
-              (erase-buffer)
-              (insert-file-contents temp-file)
-              (goto-char (min orig-point (point-max)))
-              (message "Ruff fix applied."))
-          (message "Ruff failed with exit code %d" exit-code))))))
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook #'ruff-format-buffer nil t)))
-
 (defun set-git-name
     (value)
   (setenv "GIT_AUTHOR_NAME" value)
@@ -285,7 +251,6 @@
 (setq doom-modeline-time t)
 (display-time-mode 1)
 
-
 ;; better tab-name and list files outside a project
 (defvar my-update-tabname-timer (current-time))
 (defun my-do-update-tabname ()
@@ -334,26 +299,22 @@
 (after! recentf
   (remove-hook 'dired-mode-hook #'doom--recentf-add-dired-directory-h))
 
+;; evil-snipe
+(setq evil-snipe-scope 'whole-visible)
+
 ;; localleader on , instead on SPC-m
 (setq doom-localleader-key ",")
 (setq doom-localleader-alt-key "M-,")
 
-;; disable f and t
-(map! :map evil-motion-state-map
-      "f" nil
-      "F" nil)
-(map! :map evil-motion-state-map
-      "t" nil
-      "T" nil)
-
 ;; use avy on s
 (setq avy-all-windows t)
-(map! :nv "s" #'evil-avy-goto-char-timer)
+(map! :map evil-snipe-local-mode-map :nv "s" #'evil-avy-goto-char-2)
 
 ;; use always preview in recentf and CMD-ret for the rest
 (after! consult
   (consult-customize
    consult-recent-file
+   +default/search-project
    :preview-key 'any)
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep
@@ -362,7 +323,7 @@
    :preview-key "s-<return>")
   (when (modulep! :config default)
     (consult-customize
-     +default/search-project +default/search-other-project
+     +default/search-other-project
      +default/search-project-for-symbol-at-point
      +default/search-cwd +default/search-other-cwd
      +default/search-notes-for-symbol-at-point
