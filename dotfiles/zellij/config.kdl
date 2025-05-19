@@ -12,8 +12,6 @@ keybinds clear-defaults=true {
         bind "Super Ctrl d" { Detach; }
         bind "Super Ctrl ," { MoveTab "Left"; }
         bind "Super Ctrl ." { MoveTab "Right"; }
-        bind "Super Ctrl x" { PreviousSwapLayout; }
-        bind "Super Ctrl c" { NextSwapLayout; }
         bind "Super Ctrl u" { Clear; }
         bind "Super Ctrl z" { GoToTab 1; }
         bind "Super Ctrl x" { GoToTab 2; }
