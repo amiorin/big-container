@@ -152,6 +152,10 @@
 
 ;; python
 (setq lsp-pyright-langserver-command "basedpyright")
+(after! format
+  (set-formatter! 'ruff-format
+    '("ruff" "format" "--stdin-filename" "%s" "-")
+    :modes '(python-mode python-ts-mode)))
 
 (defun set-git-name
     (value)
