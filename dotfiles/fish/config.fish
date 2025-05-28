@@ -11,7 +11,7 @@ if status is-interactive
         set -l CMD $argv[1]
         set -l TARGET_DIR ~/.config/fish/completions
         set -l TARGET $TARGET_DIR/$CMD.fish
-        mkdir -p $TARGET-DIR
+        mkdir -p $TARGET_DIR
         if not test -e $TARGET
         register-python-argcomplete --shell fish $CMD > ~/.config/fish/completions/$CMD.fish
         end
