@@ -33,21 +33,12 @@ RUN wget --quiet --output-document=/dev/stdout https://get.jetify.com/devbox | b
 RUN chown -R "${DEVBOX_USER}:${DEVBOX_USER}" /usr/local/bin/devbox
 ENV PATH="/home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin:$PATH"
 
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
-    && sudo ./aws/install \
-    && rm awscliv2.zip \
-    && rm -rf aws
-
-RUN curl https://sdk.cloud.google.com > /tmp/install.sh \
-    && bash /tmp/install.sh --disable-prompts \
-    && rm /tmp/install.sh
-ENV PATH="/home/${DEVBOX_USER}/google-cloud-sdk/bin:$PATH"
-
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
 ENV PATH="/home/${DEVBOX_USER}/.emacs.d/bin:$PATH"
 
 # Step 4: Install packages
+RUN devbox global add google-cloud-sdk
+RUN devbox global add awscli2
 RUN devbox global add fish
 RUN devbox global add ripgrep
 RUN devbox global add zellij

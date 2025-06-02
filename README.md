@@ -6,6 +6,40 @@
 
 ![screenshot](https://raw.githubusercontent.com/amiorin/big-container/main/screenshot.png)
 
+## Try
+``` shell
+docker run -it ghcr.io/amiorin/big-container
+emacs
+```
+
+## Ghostty conf
+``` conf
+macos-titlebar-style = hidden
+
+mouse-hide-while-typing = true
+clipboard-paste-protection = false
+copy-on-select = clipboard
+
+font-family = JetBrainsMonoNL Nerd Font Mono
+font-size = 16
+font-feature = -liga
+font-feature = -calt
+font-feature = -dlig
+
+keybind = clear
+
+keybind = opt+shift+n=new_window
+keybind = opt+shift+w=close_surface
+
+keybind = cmd+v=paste_from_clipboard
+
+keybind = cmd+minus=decrease_font_size:1
+keybind = cmd+equal=increase_font_size:1
+keybind = cmd+zero=reset_font_size
+
+macos-option-as-alt = true
+```
+
 ## Features
 * ARM64 and AMD64 multi-platform image
 * Clojure develpment works out of the box

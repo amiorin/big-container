@@ -9,9 +9,27 @@ The patch number is calculated with `git rev-list --count HEAD`
 
 ## [Unreleased]
 ### Added
+### Changed
+### Removed
+
+## [0.1.45] - 2025-06-02
+### Added
 - `eza` and some aliases
+- clock to `mode-line`
+- dynamic `tab-bar` in `zellij`
+- `s-f` to toggle pane frames in `zellij`
+- bindings for `cider-inspector`
 ### Changed
 - `s-t` now accept `SPC u` to open a terminal in the `default-directory` of a file instead of the project root.
+- `localleader` to `,`
+- `vterm` to show `mode-line`
+- `s` is `evil-avy-goto-char-2`
+- bindings for `embark`
+- `evil-snipe` to use `whole-visible`
+- `consult` to show preview almost always
+- `recentf` to list only files
+- `dired-jump` to work in `magit` too
+- `google-cloud-sdk` and `awscli2` to be installed with `devbox`
 ### Removed
 - hack to `cd` in the project dir when opening a new shell. Sometime it was freezing and it was making impossible to `cd` in the `default-directory` of a file.
 

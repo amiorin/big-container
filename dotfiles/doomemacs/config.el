@@ -337,3 +337,11 @@
 ;; I need to see the clock
 (after! vterm
   (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
+
+;; Better embark bindings
+(map! "C-<prior>" #'embark-act
+      (:map minibuffer-local-map
+       "C-<prior>"          #'embark-act
+       "C-<next> C-<prior>" #'embark-export
+       "C-<next> s-l"       #'embark-collect
+       :desc "Export to writable buffer" "C-<next> s-e" #'+vertico/embark-export-write))
