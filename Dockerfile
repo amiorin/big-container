@@ -33,7 +33,21 @@ RUN wget --quiet --output-document=/dev/stdout https://get.jetify.com/devbox | b
 RUN chown -R "${DEVBOX_USER}:${DEVBOX_USER}" /usr/local/bin/devbox
 ENV PATH="/home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin:$PATH"
 
-RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+# asdf
+RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-$(dpkg --print-architecture).tar.gz -o asdf.tar.gz \
+    && mkdir -p ~/.config/fish/completions \
+    && tar zxvf asdf.tar.gz \
+    && sudo mv asdf /usr/local/bin \
+    && rm asdf.tar.gz \
+    && asdf plugin add java https://github.com/halcyon/asdf-java.git \
+    && asdf install java temurin-21.0.7+6.0.LTS \
+    && echo "java temurin-21.0.7+6.0.LTS" | tee -a ~/.tool-versions \
+    asdf completion fish > ~/.config/fish/completions/asdf.fish
+
+RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
+    && cd ~/.emacs.d \
+    && git fetch origin 68010af0906171e3c989fc19bcb3ba81f7305022:refs/remotes/origin/pin-last-working-commit \
+    && git checkout 68010af0906171e3c989fc19bcb3ba81f7305022
 ENV PATH="/home/${DEVBOX_USER}/.emacs.d/bin:$PATH"
 
 # Step 4: Install packages
@@ -84,7 +98,6 @@ RUN devbox global add ruff
 RUN devbox global add overmind
 RUN devbox global add leiningen
 RUN devbox global add s5cmd
-RUN devbox global add zulu@17.0.10
 RUN devbox global add clojure
 RUN devbox global add zoxide
 RUN devbox global add eza
