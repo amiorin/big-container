@@ -99,6 +99,7 @@ RUN devbox global add overmind
 RUN devbox global add leiningen
 RUN devbox global add s5cmd
 RUN devbox global add clojure
+RUN devbox global add maven
 RUN devbox global add zoxide
 RUN devbox global add eza
 RUN devbox global add pixi
