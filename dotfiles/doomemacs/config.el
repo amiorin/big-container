@@ -312,7 +312,7 @@
 
 ;; use avy on s
 (setq avy-all-windows t)
-(map! :map evil-snipe-local-mode-map :nv "s" #'evil-avy-goto-char-2)
+(map! :map evil-snipe-local-mode-map :nv "s" #'evil-avy-goto-char-timer)
 
 ;; use always preview in recentf and CMD-ret for the rest
 (after! consult
