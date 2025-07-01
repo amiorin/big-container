@@ -42,6 +42,9 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && asdf plugin add java https://github.com/halcyon/asdf-java.git \
     && asdf install java temurin-21.0.7+6.0.LTS \
     && echo "java temurin-21.0.7+6.0.LTS" | tee -a ~/.tool-versions \
+    && asdf plugin add maven https://github.com/halcyon/asdf-maven \
+    && asdf install maven install 3.9.9 \
+    && echo "maven 3.9.9" | tee -a ~/.tool-versions \
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
@@ -99,7 +102,6 @@ RUN devbox global add overmind
 RUN devbox global add leiningen
 RUN devbox global add s5cmd
 RUN devbox global add clojure
-RUN devbox global add maven
 RUN devbox global add zoxide
 RUN devbox global add eza
 RUN devbox global add pixi
