@@ -345,3 +345,6 @@
        "C-<next> C-<prior>" #'embark-export
        "C-<next> s-l"       #'embark-collect
        :desc "Export to writable buffer" "C-<next> s-e" #'+vertico/embark-export-write))
+
+;; magit diff 2 panes instead of 3
+(setq magit-ediff-dwim-show-on-hunks t)
