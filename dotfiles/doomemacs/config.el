@@ -85,6 +85,7 @@
 (use-package! direnv
   :hook (doom-first-file . direnv-mode)
   :config
+  (setq direnv-always-show-summary nil)
   (add-to-list 'warning-suppress-types '(direnv)))
 
 ;; dired

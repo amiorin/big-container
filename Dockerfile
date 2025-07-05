@@ -54,6 +54,7 @@ RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
 ENV PATH="/home/${DEVBOX_USER}/.emacs.d/bin:$PATH"
 
 # Step 4: Install packages
+RUN devbox global add lorri
 RUN devbox global add google-cloud-sdk
 RUN devbox global add awscli2
 RUN devbox global add fish

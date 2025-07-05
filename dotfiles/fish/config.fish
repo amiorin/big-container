@@ -2,6 +2,14 @@ set -gx SHELL /usr/bin/fish
 devbox global shellenv --recompute | source
 
 if status is-interactive
+    # workaround to direnv
+    test -e .envrc; and touch .envrc
+
+    # start lorri
+    if not pgrep -x lorri > /dev/null
+        nohup lorri daemon > /dev/null 2>&1 &
+    end
+
     #asdf
     if test -z $ASDF_DATA_DIR
         set _asdf_shims "$HOME/.asdf/shims"

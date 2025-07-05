@@ -18,6 +18,10 @@ disabled = true
 disabled = true
 [java]
 disabled = true
+[python]
+disabled = true
+[nix_shell]
+disabled = true
 [custom.current_dir]
 command = "printf '\\e]%s\\e\\\\' '51;A'(whoami)'@'(hostname)':'(pwd)"
 when = "true"
