@@ -7,7 +7,8 @@ if status is-interactive
 
     # start lorri
     if not pgrep -x lorri > /dev/null
-        nohup lorri daemon > /dev/null 2>&1 &
+        nohup lorri daemon < /dev/null > /dev/null 2>&1 &
+        disown
     end
 
     #asdf
