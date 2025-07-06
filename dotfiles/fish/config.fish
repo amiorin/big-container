@@ -94,6 +94,8 @@ if status is-interactive
     alias rt="ls -l -r -a --smart-group --sort=time"
     alias u="cd .."
     alias k=kubectl
+    alias o=overmind
+    alias j=just
 end
 
 set -gx POETRY_VIRTUALENVS_IN_PROJECT true
