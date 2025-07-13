@@ -6,7 +6,7 @@ if status is-interactive
     test -e .envrc; and touch .envrc
 
     # start lorri
-    if not pgrep -x lorri > /dev/null
+    if not socat -u OPEN:/dev/null UNIX-CONNECT:$HOME/.cache/lorri/daemon.socket > /dev/null 2>&1
         nohup lorri daemon < /dev/null > /dev/null 2>&1 &
         disown
     end
