@@ -1,7 +1,7 @@
-set -gx SHELL /usr/bin/fish
-devbox global shellenv --recompute | source
-
 if status is-interactive
+    set -gx SHELL /usr/bin/fish
+    devbox global shellenv --recompute | source
+
     # workaround to direnv
     test -e .envrc; and touch .envrc
 
@@ -96,9 +96,10 @@ if status is-interactive
     alias k=kubectl
     alias o=overmind
     alias j=just
-end
 
-set -gx POETRY_VIRTUALENVS_IN_PROJECT true
-set -gx TZ 'Europe/Berlin'
-set -gx LOCALE_ARCHIVE /usr/lib/locale/locale-archive
-test -e /var/run/docker.sock; and sudo chmod 777 /var/run/docker.sock
+    # misc
+    set -gx POETRY_VIRTUALENVS_IN_PROJECT true
+    set -gx TZ 'Europe/Berlin'
+    set -gx LOCALE_ARCHIVE /usr/lib/locale/locale-archive
+    test -e /var/run/docker.sock; and sudo chmod 777 /var/run/docker.sock
+end
