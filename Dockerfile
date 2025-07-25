@@ -41,7 +41,10 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && rm asdf.tar.gz \
     && asdf plugin add java https://github.com/halcyon/asdf-java.git \
     && asdf install java temurin-21.0.7+6.0.LTS \
-    && echo "java temurin-21.0.7+6.0.LTS" | tee -a ~/.tool-versions \
+    && asdf set --home java temurin-21.0.7+6.0.LTS \
+    && asdf plugin add duckdb https://github.com/amiorin/asdf-duckdb.git \
+    && asdf install duckdb 1.3.2 \
+    && asdf set --home duckdb 1.3.2 \
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
@@ -88,7 +91,6 @@ RUN devbox global add cljfmt
 RUN devbox global add dig
 RUN devbox global add protoscope
 RUN devbox global add protobuf
-RUN devbox global add duckdb
 RUN devbox global add bun
 RUN devbox global add micromamba
 RUN devbox global add go
