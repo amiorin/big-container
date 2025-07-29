@@ -74,6 +74,9 @@
 
 ;; no prompt for lsp
 (setq lsp-auto-guess-root t)
+;; lsp ignore
+(after! lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.big_config\\'"))
 
 ;; discover projects
 (setq projectile-project-search-path '(("~/workspaces" . 3) ("~/code/personal" . 2)))
