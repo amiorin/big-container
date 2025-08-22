@@ -43,8 +43,14 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && asdf install java temurin-21.0.7+6.0.LTS \
     && asdf set --home java temurin-21.0.7+6.0.LTS \
     && asdf plugin add duckdb https://github.com/amiorin/asdf-duckdb.git \
-    && asdf install duckdb 1.3.2 \
-    && asdf set --home duckdb 1.3.2 \
+    && asdf install duckdb latest \
+    && asdf set --home duckdb latest \
+    && asdf plugin add hugo https://github.com/Edditoria/asdf-hugo.git \
+    && asdf install hugo latest:extended \
+    && asdf set --home hugo latest:extended \
+    && asdf plugin add golang https://github.com/asdf-community/asdf-golang.git \
+    && asdf install golang latest \
+    && asdf set --home golang latest \
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
@@ -55,6 +61,8 @@ ENV PATH="/home/${DEVBOX_USER}/.emacs.d/bin:$PATH"
 
 # Step 4: Install packages
 RUN devbox global add lorri
+RUN devbox global add dart-sass
+RUN devbox global add opentelemetry-collector
 RUN devbox global add socat
 RUN devbox global add google-cloud-sdk
 RUN devbox global add awscli2
