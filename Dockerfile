@@ -51,6 +51,9 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && asdf plugin add golang https://github.com/asdf-community/asdf-golang.git \
     && asdf install golang latest \
     && asdf set --home golang latest \
+    && asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git \
+    && asdf install nodejs latest \
+    && asdf set --home nodejs latest \
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
@@ -79,7 +82,6 @@ RUN devbox global add cmake
 RUN devbox global add just
 RUN devbox global add libtool
 RUN devbox global add pipx
-RUN devbox global add nodejs
 RUN devbox global add saml2aws
 RUN devbox global add docker
 RUN devbox global add tini
