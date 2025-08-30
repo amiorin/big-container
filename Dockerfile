@@ -54,6 +54,9 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git \
     && asdf install nodejs latest \
     && asdf set --home nodejs latest \
+    && asdf plugin add clojure https://github.com/asdf-community/asdf-clojure.git \
+    && asdf install clojure latest \
+    && asdf set --home clojure latest \
     && asdf plugin add babashka https://github.com/pitch-io/asdf-babashka.git \
     && asdf install babashka latest \
     && asdf set --home babashka latest \
