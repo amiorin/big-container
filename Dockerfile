@@ -58,6 +58,7 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && asdf install babashka latest \
     && asdf set --home babashka latest \
     asdf completion fish > ~/.config/fish/completions/asdf.fish
+ENV PATH="/home/${DEVBOX_USER}/.asdf/shims:$PATH"
 
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
     && cd ~/.emacs.d \
