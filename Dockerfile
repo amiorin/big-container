@@ -40,8 +40,8 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && sudo mv asdf /usr/local/bin \
     && rm asdf.tar.gz \
     && asdf plugin add java https://github.com/halcyon/asdf-java.git \
-    && asdf install java temurin-21.0.7+6.0.LTS \
-    && asdf set --home java temurin-21.0.7+6.0.LTS \
+    && asdf install java latest:temurin-21 \
+    && asdf set --home java latest:temurin-21 \
     && asdf plugin add duckdb https://github.com/amiorin/asdf-duckdb.git \
     && asdf install duckdb latest \
     && asdf set --home duckdb latest \
@@ -54,6 +54,9 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git \
     && asdf install nodejs latest \
     && asdf set --home nodejs latest \
+    && asdf plugin add babashka https://github.com/pitch-io/asdf-babashka.git \
+    && asdf install babashka latest \
+    && asdf set --home babashka latest \
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
@@ -103,16 +106,13 @@ RUN devbox global add protoscope
 RUN devbox global add protobuf
 RUN devbox global add bun
 RUN devbox global add micromamba
-RUN devbox global add go
 RUN devbox global add zig
-RUN devbox global add babashka
 RUN devbox global add jet
 RUN devbox global add uv
 RUN devbox global add ruff
 RUN devbox global add overmind
 RUN devbox global add leiningen
 RUN devbox global add s5cmd
-RUN devbox global add clojure
 RUN devbox global add zoxide
 RUN devbox global add eza
 RUN devbox global add pixi
@@ -147,23 +147,23 @@ ENV PATH="/home/${DEVBOX_USER}/.local/bin:$PATH"
 RUN curl -L https://github.com/kovidgoyal/kitty/releases/download/v0.39.1/kitten-linux-$(dpkg --print-architecture) -o /home/${DEVBOX_USER}/.local/bin/kitten \
     && chmod 0755 /home/${DEVBOX_USER}/.local/bin/kitten
 
-RUN devbox global run -- go install golang.org/x/tools/gopls@latest
-RUN devbox global run -- go install github.com/x-motemen/gore/cmd/gore@latest
-RUN devbox global run -- go install github.com/stamblerre/gocode@latest
-RUN devbox global run -- go install golang.org/x/tools/cmd/godoc@latest
-RUN devbox global run -- go install golang.org/x/tools/cmd/goimports@latest
-RUN devbox global run -- go install golang.org/x/tools/cmd/gorename@latest
-RUN devbox global run -- go install golang.org/x/tools/cmd/guru@latest
-RUN devbox global run -- go install github.com/cweill/gotests/...@latest
-RUN devbox global run -- go install github.com/fatih/gomodifytags@latest
+RUN go install golang.org/x/tools/gopls@latest
+RUN go install github.com/x-motemen/gore/cmd/gore@latest
+RUN go install github.com/stamblerre/gocode@latest
+RUN go install golang.org/x/tools/cmd/godoc@latest
+RUN go install golang.org/x/tools/cmd/goimports@latest
+RUN go install golang.org/x/tools/cmd/gorename@latest
+RUN go install golang.org/x/tools/cmd/guru@latest
+RUN go install github.com/cweill/gotests/...@latest
+RUN go install github.com/fatih/gomodifytags@latest
 ENV PATH="/home/${DEVBOX_USER}/go/bin:$PATH"
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
 ENV PATH="/home/${DEVBOX_USER}/.cargo/bin:$PATH"
 
-RUN devbox global run -- clojure -Ttools install-latest :lib com.github.liquidz/antq :as antq
-RUN devbox global run -- clojure -Ttools install com.github.seancorfield/clj-new '{:git/tag "v1.2.404"}' :as clj-new
-RUN devbox global run -- clojure -Ttools install-latest :lib io.github.seancorfield/deps-new :as new
+RUN clojure -Ttools install-latest :lib com.github.liquidz/antq :as antq
+RUN clojure -Ttools install-latest :lib com.github.seancorfield/clj-new :as clj-new
+RUN clojure -Ttools install-latest :lib io.github.seancorfield/deps-new :as new
 RUN mkdir -p ~/.local/bin && curl -o- -L https://raw.githubusercontent.com/babashka/bbin/v0.2.4/bbin > ~/.local/bin/bbin && chmod +x ~/.local/bin/bbin
 RUN bbin install io.github.babashka/neil
 RUN neil --version
@@ -175,9 +175,13 @@ RUN devbox global run -- bash -c "cd /tmp/dotfiles && just install"
 RUN devbox global run -- bash -c "mkdir -p ~/.doom.d/snippets"
 RUN devbox global run -- ~/.emacs.d/bin/doom sync
 RUN devbox global run -- emacs --fg-daemon --eval '(setq vterm-always-compile-module t)' --eval '(vterm-module-compile)' --eval '(kill-emacs)'
-RUN devbox global run -- npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/dockerfile-language-server-nodejs install dockerfile-language-server-nodejs
-RUN devbox global run -- npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/basedpyright install basedpyright
-RUN devbox global run -- npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/yaml-language-server install yaml-language-server
+RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/dockerfile-language-server-nodejs install dockerfile-language-server-nodejs
+RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/basedpyright install basedpyright
+RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/typescript install typescript
+RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/typescript-language-server install typescript-language-server
+RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/yaml-language-server install yaml-language-server
+RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/@astrojs/language-server install @astrojs/language-server
+RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/@mdx-js/language-server install @mdx-js/language-server
 
 ENTRYPOINT ["tini", "--"]
 
