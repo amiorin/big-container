@@ -60,6 +60,9 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && asdf plugin add babashka https://github.com/pitch-io/asdf-babashka.git \
     && asdf install babashka latest \
     && asdf set --home babashka latest \
+    && asdf plugin add opentofu https://github.com/virtualroot/asdf-opentofu.git \
+    && asdf install opentofu latest \
+    && asdf set --home opentofu latest \
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 ENV PATH="/home/${DEVBOX_USER}/.asdf/shims:$PATH"
 
@@ -99,7 +102,6 @@ RUN devbox global add minio
 RUN devbox global add kubectl
 RUN devbox global add kubectx
 RUN devbox global add k9s
-RUN devbox global add opentofu
 RUN devbox global add hcl2json
 RUN devbox global add gum
 RUN devbox global add minikube
