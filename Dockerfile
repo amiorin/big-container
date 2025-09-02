@@ -74,6 +74,7 @@ ENV PATH="/home/${DEVBOX_USER}/.emacs.d/bin:$PATH"
 
 # Step 4: Install packages
 RUN devbox global add lorri
+RUN devbox global add d2
 RUN devbox global add dart-sass
 RUN devbox global add opentelemetry-collector
 RUN devbox global add socat
