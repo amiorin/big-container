@@ -41,28 +41,31 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     && rm asdf.tar.gz \
     && asdf plugin add java https://github.com/halcyon/asdf-java.git \
     && asdf install java latest:temurin-21 \
-    && asdf global java latest:temurin-21 \
+    && asdf set --home java latest:temurin-21 \
     && asdf plugin add duckdb https://github.com/amiorin/asdf-duckdb.git \
     && asdf install duckdb latest \
-    && asdf global duckdb latest \
+    && asdf set --home duckdb latest \
     && asdf plugin add hugo https://github.com/Edditoria/asdf-hugo.git \
     && asdf install hugo latest:extended \
-    && asdf global hugo latest:extended \
+    && asdf set --home hugo latest:extended \
     && asdf plugin add golang https://github.com/asdf-community/asdf-golang.git \
     && asdf install golang latest \
-    && asdf global golang latest \
+    && asdf set --home golang latest \
     && asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git \
     && asdf install nodejs latest \
-    && asdf global nodejs latest \
+    && asdf set --home nodejs latest \
     && asdf plugin add clojure https://github.com/asdf-community/asdf-clojure.git \
     && asdf install clojure latest \
-    && asdf global clojure latest \
+    && asdf set --home clojure latest \
     && asdf plugin add babashka https://github.com/pitch-io/asdf-babashka.git \
     && asdf install babashka latest \
-    && asdf global babashka latest \
+    && asdf set --home babashka latest \
     && asdf plugin add opentofu https://github.com/virtualroot/asdf-opentofu.git \
     && asdf install opentofu latest \
-    && asdf global opentofu latest \
+    && asdf set --home opentofu latest \
+    && asdf plugin add lein https://github.com/miorimmax/asdf-lein.git \
+    && asdf install lein latest \
+    && asdf set --home lein latest \
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 ENV PATH="/home/${DEVBOX_USER}/.asdf/shims:$PATH"
 
