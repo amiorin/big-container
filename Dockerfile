@@ -69,6 +69,8 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 ENV PATH="/home/${DEVBOX_USER}/.asdf/shims:$PATH"
 
+RUN nix profile add nixpkgs#devenv
+
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
     && cd ~/.emacs.d \
     && git fetch origin 68010af0906171e3c989fc19bcb3ba81f7305022:refs/remotes/origin/pin-last-working-commit \
