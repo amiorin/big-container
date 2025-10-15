@@ -1,39 +1,41 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
-# postgres
+# As root
+# Create postgres unix socket
 RUN mkdir /run/postgresql \
     && chmod 1777 /run/postgresql
 
-# Step 1: Installing dependencies
+# Installing dependencies
 RUN apt-get update
 RUN apt-get -y install acl bash binutils git xz-utils wget sudo iputils-ping file
 
-# Step 1.1: Change uid and gid to be compatible with Github Actions
+# Change uid and gid to be compatible with Github Actions
 RUN usermod -u 1001 vscode \
     && groupmod -g 1001 vscode \
     && chown -R vscode:vscode /home/vscode \
     && chsh -s /usr/bin/fish vscode
 
-# Step 1.5: Setting up devbox user
+# Setting up devbox user
 ENV DEVBOX_USER=vscode
 USER $DEVBOX_USER
 WORKDIR /home/${DEVBOX_USER}
 
-# Step 2: Installing Nix
-RUN wget --output-document=/dev/stdout https://nixos.org/nix/install | sh -s -- --no-daemon
-RUN . ~/.nix-profile/etc/profile.d/nix.sh
+# As vscode
+# Installing Determinate Nix
+RUN curl -fsSL https://install.determinate.systems/nix | sh -s -- install linux \
+    --extra-conf "sandbox = false" \
+    --init none \
+    --no-confirm
+RUN sudo chown -R ${DEVBOX_USER} /nix
+ENV PATH="/nix/var/nix/profiles/default/bin:${PATH}"
 
+# Install devenv and devbox
+RUN nix profile add nixpkgs#devenv
+RUN nix profile add github:jetify-com/devbox/latest
 ENV PATH="/home/${DEVBOX_USER}/.nix-profile/bin:$PATH"
-
-# Optional arg to install custom devbox version
-ARG DEVBOX_USE_VERSION
-# Step 3: Installing devbox
-ENV DEVBOX_USE_VERSION=$DEVBOX_USE_VERSION
-RUN wget --quiet --output-document=/dev/stdout https://get.jetify.com/devbox | bash -s -- -f
-RUN chown -R "${DEVBOX_USER}:${DEVBOX_USER}" /usr/local/bin/devbox
 ENV PATH="/home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin:$PATH"
 
-# asdf
+# Install asdf
 RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-$(dpkg --print-architecture).tar.gz -o asdf.tar.gz \
     && mkdir -p ~/.config/fish/completions \
     && tar zxvf asdf.tar.gz \
@@ -69,15 +71,14 @@ RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18
     asdf completion fish > ~/.config/fish/completions/asdf.fish
 ENV PATH="/home/${DEVBOX_USER}/.asdf/shims:$PATH"
 
-RUN nix profile add nixpkgs#devenv
-
+# Install doomemacs pinned version
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
     && cd ~/.emacs.d \
     && git fetch origin 68010af0906171e3c989fc19bcb3ba81f7305022:refs/remotes/origin/pin-last-working-commit \
     && git checkout 68010af0906171e3c989fc19bcb3ba81f7305022
 ENV PATH="/home/${DEVBOX_USER}/.emacs.d/bin:$PATH"
 
-# Step 4: Install packages
+# Install devbox global packages
 RUN devbox global add lorri
 RUN devbox global add d2
 RUN devbox global add dart-sass
@@ -134,13 +135,14 @@ RUN devbox global add postgresql@14.9 --disable-plugin
 RUN devbox global add nginx --disable-plugin
 RUN devbox global add emacs
 
+# Install fish
 RUN sudo ln -sf /home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish /usr/bin/fish \
     && echo /usr/bin/fish | sudo tee -a /etc/shells \
     && echo /home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish | sudo tee -a /etc/shells \
     && sudo chsh -s /usr/bin/fish ${DEVBOX_USER}
 RUN devbox global run -- fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher && fisher install pymander/vfish'
 
-
+# Install nodejs tools
 RUN mkdir ~/.npm-global \
     && devbox global run -- npm config set prefix '~/.npm-global' \
     && devbox global run -- npm -g install @devcontainers/cli \
