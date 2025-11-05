@@ -157,8 +157,9 @@ RUN mkdir ~/.npm-global \
                                            prettier
 ENV PATH="/home/${DEVBOX_USER}/.npm-global/bin:$PATH"
 
-RUN mkdir ~/.docker
+RUN mkdir -p ~/.docker
 
+RUN mkdir -p ~/.local/bin
 ENV PATH="/home/${DEVBOX_USER}/.local/bin:$PATH"
 
 RUN curl -L https://github.com/kovidgoyal/kitty/releases/download/v0.39.1/kitten-linux-$(dpkg --print-architecture) -o /home/${DEVBOX_USER}/.local/bin/kitten \
