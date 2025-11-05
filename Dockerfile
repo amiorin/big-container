@@ -35,6 +35,14 @@ RUN nix profile add github:jetify-com/devbox/latest
 ENV PATH="/home/${DEVBOX_USER}/.nix-profile/bin:$PATH"
 ENV PATH="/home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin:$PATH"
 
+# Fix ssh and GitHub
+RUN mkdir ~/.ssh \
+    && chmod 700 ~/.ssh \
+    && ssh-keyscan -H github.com >> ~/.ssh/known_hosts \
+    && git config --global user.name "github-actions[bot]" \
+    && git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+
 # Install asdf
 RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-$(dpkg --print-architecture).tar.gz -o asdf.tar.gz \
     && mkdir -p ~/.config/fish/completions \
