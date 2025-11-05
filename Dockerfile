@@ -126,7 +126,6 @@ RUN devbox global add dig
 RUN devbox global add protoscope
 RUN devbox global add protobuf
 RUN devbox global add bun
-RUN devbox global add micromamba
 RUN devbox global add zig
 RUN devbox global add jet
 RUN devbox global add uv
@@ -160,10 +159,6 @@ ENV PATH="/home/${DEVBOX_USER}/.npm-global/bin:$PATH"
 
 RUN mkdir ~/.docker
 
-RUN devbox global run -- micromamba create --yes --name py3.10 --channel conda-forge python=3.10
-RUN devbox global run -- micromamba create --yes --name py3.11 --channel conda-forge python=3.11
-RUN devbox global run -- pipx install --python /home/${DEVBOX_USER}/micromamba/envs/py3.10/bin/python3.10 poetry meltano==2.20 basedpyright ruff ansible-core
-RUN devbox global run -- pipx inject --include-apps --include-deps ansible-core argcomplete boto3
 ENV PATH="/home/${DEVBOX_USER}/.local/bin:$PATH"
 
 RUN curl -L https://github.com/kovidgoyal/kitty/releases/download/v0.39.1/kitten-linux-$(dpkg --print-architecture) -o /home/${DEVBOX_USER}/.local/bin/kitten \
