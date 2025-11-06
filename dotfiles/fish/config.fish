@@ -64,7 +64,8 @@ if status is-interactive
     starship init fish | source
     zoxide init fish | source
     direnv hook fish | source
-    atuin init fish | source
+    # workaround https://github.com/atuinsh/atuin/issues/2940
+    atuin init fish | sed "s/-k up/up/g" | source
 
     fish_vi_key_bindings
     # cursor style like vim

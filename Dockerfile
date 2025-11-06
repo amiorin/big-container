@@ -35,14 +35,6 @@ RUN nix profile add github:jetify-com/devbox/latest
 ENV PATH="/home/${DEVBOX_USER}/.nix-profile/bin:$PATH"
 ENV PATH="/home/${DEVBOX_USER}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin:$PATH"
 
-# Fix ssh and GitHub
-RUN mkdir ~/.ssh \
-    && chmod 700 ~/.ssh \
-    && ssh-keyscan -H github.com >> ~/.ssh/known_hosts \
-    && git config --global user.name "github-actions[bot]" \
-    && git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-
 # Install asdf
 RUN curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-$(dpkg --print-architecture).tar.gz -o asdf.tar.gz \
     && mkdir -p ~/.config/fish/completions \
@@ -126,6 +118,8 @@ RUN devbox global add dig
 RUN devbox global add protoscope
 RUN devbox global add protobuf
 RUN devbox global add bun
+# pin because of an incompatibility between gcc and libmamba (std::swap unitialized)
+RUN devbox global add micromamba@1.5.4
 RUN devbox global add zig
 RUN devbox global add jet
 RUN devbox global add uv
@@ -160,6 +154,10 @@ ENV PATH="/home/${DEVBOX_USER}/.npm-global/bin:$PATH"
 RUN mkdir -p ~/.docker
 
 RUN mkdir -p ~/.local/bin
+RUN devbox global run -- micromamba create --yes --name py3.10 --channel conda-forge python=3.10
+RUN devbox global run -- micromamba create --yes --name py3.11 --channel conda-forge python=3.11
+RUN devbox global run -- pipx install --python /home/${DEVBOX_USER}/micromamba/envs/py3.10/bin/python3.10 poetry meltano==2.20 basedpyright ruff ansible-core
+RUN devbox global run -- pipx inject --include-apps --include-deps ansible-core argcomplete boto3
 ENV PATH="/home/${DEVBOX_USER}/.local/bin:$PATH"
 
 RUN curl -L https://github.com/kovidgoyal/kitty/releases/download/v0.39.1/kitten-linux-$(dpkg --print-architecture) -o /home/${DEVBOX_USER}/.local/bin/kitten \
@@ -200,6 +198,13 @@ RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/typescript-
 RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/yaml-language-server install yaml-language-server
 RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/@astrojs/language-server install @astrojs/language-server
 RUN npm -g --prefix /home/${DEVBOX_USER}/.emacs.d/.local/etc/lsp/npm/@mdx-js/language-server install @mdx-js/language-server
+
+# Fix ssh and GitHub
+RUN mkdir -p ~/.ssh \
+    && chmod 700 ~/.ssh \
+    && ssh-keyscan -H github.com >> ~/.ssh/known_hosts \
+    && git config --global user.name "github-actions[bot]" \
+    && git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
 ENTRYPOINT ["tini", "--"]
 
