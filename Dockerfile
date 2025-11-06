@@ -184,10 +184,13 @@ RUN mkdir -p ~/.local/bin && curl -o- -L https://raw.githubusercontent.com/babas
 RUN bbin install io.github.babashka/neil
 RUN neil --version
 
-COPY justfile /tmp/dotfiles/justfile
-COPY dotfiles /tmp/dotfiles/dotfiles
-RUN cat /tmp/dotfiles/xterm-ghostty | tic -x -
-RUN devbox global run -- bash -c "cd /tmp/dotfiles && just install"
+# dotfiles-v3
+ENV DOTFILES="/home/${DEVBOX_USER}/code/personal/dotfiles-v3/main"
+COPY --chown=${DEVBOX_USER} dotfiles-v3/main ${DOTFILES}
+RUN cd ${DOTFILES} \
+    && cat ${DOTFILES}/xterm-ghostty | tic -x - \
+    && bb install -p ubuntu
+
 RUN devbox global run -- bash -c "mkdir -p ~/.doom.d/snippets"
 RUN devbox global run -- ~/.emacs.d/bin/doom sync
 RUN devbox global run -- emacs --fg-daemon --eval '(setq vterm-always-compile-module t)' --eval '(vterm-module-compile)' --eval '(kill-emacs)'

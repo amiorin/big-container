@@ -1,0 +1,7 @@
+**/.clj-kondo
+**/.cpcache
+**/.devenv
+**/.direnv
+**/.lsp
+**/.devenv.flake.nix
+**/.envrc.private

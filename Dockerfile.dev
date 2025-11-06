@@ -1,0 +1,7 @@
+FROM ghcr.io/amiorin/big-container:latest
+
+ENV DOTFILES="/home/${DEVBOX_USER}/code/personal/dotfiles-v3/main"
+COPY --chown=${DEVBOX_USER} dotfiles-v3/main ${DOTFILES}
+RUN cd ${DOTFILES} \
+    && cat ${DOTFILES}/xterm-ghostty | tic -x - \
+    && bb install -p ubuntu
