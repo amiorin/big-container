@@ -186,9 +186,9 @@ RUN neil --version
 
 # dotfiles-v3
 ENV DOTFILES="/home/${DEVBOX_USER}/code/personal/dotfiles-v3/main"
-COPY --chown=${DEVBOX_USER} dotfiles-v3/main ${DOTFILES}
-RUN cd ${DOTFILES} \
-    && cat ${DOTFILES}/xterm-ghostty | tic -x - \
+RUN git clone https://github.com/amiorin/dotfiles-v3.git ${DOTFILES} \
+    && cd ${DOTFILES} \
+    && cat xterm-ghostty | tic -x - \
     && bb install -p ubuntu
 
 RUN devbox global run -- bash -c "mkdir -p ~/.doom.d/snippets"

@@ -18,9 +18,6 @@ jobs:
   stage2-arm:
     runs-on: ubuntu-24.04-arm
     steps:
-      - name: Clone dotfiles
-        run: git clone https://github.com/amiorin/dotfiles-v3.git dotfiles-v3/main
-
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
@@ -52,9 +49,6 @@ jobs:
   stage2-amd:
     runs-on: ubuntu-24.04
     steps:
-      - name: Clone dotfiles
-        run: git clone https://github.com/amiorin/dotfiles-v3.git dotfiles-v3/main
-
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
